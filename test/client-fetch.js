@@ -1,13 +1,14 @@
 'use strict'
 
 const { test } = require('tap')
-const { fetch } = require('..')
 const { createServer } = require('http')
 const nodeMajor = Number(process.versions.node.split('.')[0])
 
 test('fetch', {
   skip: nodeMajor < 16
 }, t => {
+  const { fetch } = require('..')
+
   t.test('request json', (t) => {
     t.plan(1)
 
