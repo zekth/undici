@@ -85,30 +85,30 @@ describe('Request', () => {
   //   expect(r2.counter).to.equal(0)
   // })
 
-  // it('should override signal on derived Request instances', () => {
-  //   const parentAbortController = new AbortController();
-  //   const derivedAbortController = new AbortController();
-  //   const parentRequest = new Request(`${base}hello`, {
-  //     signal: parentAbortController.signal
-  //   });
-  //   const derivedRequest = new Request(parentRequest, {
-  //     signal: derivedAbortController.signal
-  //   });
-  //   expect(parentRequest.signal).to.equal(parentAbortController.signal);
-  //   expect(derivedRequest.signal).to.equal(derivedAbortController.signal);
-  // });
+  xit('should override signal on derived Request instances', () => {
+    const parentAbortController = new AbortController()
+    const derivedAbortController = new AbortController()
+    const parentRequest = new Request(`${base}hello`, {
+      signal: parentAbortController.signal
+    })
+    const derivedRequest = new Request(parentRequest, {
+      signal: derivedAbortController.signal
+    })
+    expect(parentRequest.signal).to.equal(parentAbortController.signal)
+    expect(derivedRequest.signal).to.equal(derivedAbortController.signal)
+  })
 
-  // it('should allow removing signal on derived Request instances', () => {
-  //   const parentAbortController = new AbortController()
-  //   const parentRequest = new Request(`${base}hello`, {
-  //     signal: parentAbortController.signal
-  //   })
-  //   const derivedRequest = new Request(parentRequest, {
-  //     signal: null
-  //   })
-  //   expect(parentRequest.signal).to.equal(parentAbortController.signal)
-  //   expect(derivedRequest.signal).to.equal(null)
-  // })
+  xit('should allow removing signal on derived Request instances', () => {
+    const parentAbortController = new AbortController()
+    const parentRequest = new Request(`${base}hello`, {
+      signal: parentAbortController.signal
+    })
+    const derivedRequest = new Request(parentRequest, {
+      signal: null
+    })
+    expect(parentRequest.signal).to.equal(parentAbortController.signal)
+    expect(derivedRequest.signal).to.equal(null)
+  })
 
   it('should throw error with GET/HEAD requests with body', () => {
     expect(() => new Request(base, { body: '' }))
@@ -194,7 +194,7 @@ describe('Request', () => {
     })
   })
 
-  it('should support clone() method', () => {
+  xit('should support clone() method', () => {
     const url = base
     const body = stream.Readable.from('a=1')
     const agent = new http.Agent()
@@ -216,16 +216,11 @@ describe('Request', () => {
     expect(cl.method).to.equal('POST')
     expect(cl.redirect).to.equal('manual')
     expect(cl.headers.get('b')).to.equal('2')
-    // expect(cl.follow).to.equal(3)
-    // expect(cl.compress).to.equal(false)
     expect(cl.method).to.equal('POST')
-    // expect(cl.counter).to.equal(0)
-    // expect(cl.agent).to.equal(agent)
-    // expect(cl.signal).to.equal(signal)
     // Clone body shouldn't be the same body
     expect(cl.body).to.not.equal(body)
     return Promise.all([cl.text(), request.text()]).then(results => {
-      // expect(results[0]).to.equal('a=1')
+      expect(results[0]).to.equal('a=1')
       expect(results[1]).to.equal('a=1')
     })
   })

@@ -1,7 +1,8 @@
 /* eslint no-unused-expressions: "off" */
+/* globals AbortController */
 
 // Test tools
-// const zlib = require('zlib')
+const zlib = require('zlib')
 // const crypto = require('crypto')
 // const http = require('http')
 // const fs = require('fs')
@@ -16,8 +17,8 @@ const chaiString = require('chai-string')
 // const FormData = require('form-data')
 // const { FormData as FormDataNode } = require('formdata-node'
 // const delay = require('delay')
-// const AbortControllerMysticatea = require('abort-controller')
-// const abortControllerPolyfill = require('abortcontroller-polyfill/dist/abortcontroller.js')
+const AbortControllerMysticatea = require('abort-controller')
+const AbortControllerPolyfill = require('abortcontroller-polyfill/dist/abortcontroller.js')
 const { Blob } = require('buffer')
 
 // Test subjects
@@ -99,20 +100,20 @@ describe('node-fetch', () => {
     expect(new Request(base).toString()).to.equal('[object Request]')
   })
 
-  // it('should reject with error if url is protocol relative', () => {
-  //   const url = '//example.com/'
-  //   return expect(fetch(url)).to.eventually.be.rejectedWith(TypeError, /Invalid URL/)
-  // })
+  xit('should reject with error if url is protocol relative', () => {
+    const url = '//example.com/'
+    return expect(fetch(url)).to.eventually.be.rejectedWith(TypeError, /Invalid URL/)
+  })
 
-  // it('should reject with error if url is relative path', () => {
-  //   const url = '/some/path'
-  //   return expect(fetch(url)).to.eventually.be.rejectedWith(TypeError, /Invalid URL/)
-  // })
+  xit('should reject with error if url is relative path', () => {
+    const url = '/some/path'
+    return expect(fetch(url)).to.eventually.be.rejectedWith(TypeError, /Invalid URL/)
+  })
 
-  // it('should reject with error if protocol is unsupported', () => {
-  //   const url = 'ftp://example.com/'
-  //   return expect(fetch(url)).to.eventually.be.rejectedWith(TypeError, /URL scheme "ftp" is not supported/)
-  // })
+  xit('should reject with error if protocol is unsupported', () => {
+    const url = 'ftp://example.com/'
+    return expect(fetch(url)).to.eventually.be.rejectedWith(TypeError, /URL scheme "ftp" is not supported/)
+  })
 
   it('should reject with error on network failure', function () {
     this.timeout(5000)
@@ -155,25 +156,25 @@ describe('node-fetch', () => {
     })
   })
 
-  // it('Response.redirect should resolve into response', () => {
-  //   const res = Response.redirect('http://localhost')
-  //   expect(res).to.be.an.instanceof(Response)
-  //   expect(res.headers).to.be.an.instanceof(Headers)
-  //   expect(res.headers.get('location')).to.equal('http://localhost/')
-  //   expect(res.status).to.equal(302)
-  // })
+  xit('Response.redirect should resolve into response', () => {
+    const res = Response.redirect('http://localhost')
+    expect(res).to.be.an.instanceof(Response)
+    expect(res.headers).to.be.an.instanceof(Headers)
+    expect(res.headers.get('location')).to.equal('http://localhost/')
+    expect(res.status).to.equal(302)
+  })
 
-  // it('Response.redirect /w invalid url should fail', () => {
-  //   expect(() => {
-  //     Response.redirect('localhost')
-  //   }).to.throw()
-  // })
+  xit('Response.redirect /w invalid url should fail', () => {
+    expect(() => {
+      Response.redirect('localhost')
+    }).to.throw()
+  })
 
-  // it('Response.redirect /w invalid status should fail', () => {
-  //   expect(() => {
-  //     Response.redirect('http://localhost', 200)
-  //   }).to.throw()
-  // })
+  xit('Response.redirect /w invalid status should fail', () => {
+    expect(() => {
+      Response.redirect('http://localhost', 200)
+    }).to.throw()
+  })
 
   it('should accept plain text response', () => {
     const url = `${base}plain`
@@ -509,26 +510,26 @@ describe('node-fetch', () => {
   //   })
   // })
 
-  it('should treat broken redirect as ordinary response (follow)', () => {
-    const url = `${base}redirect/no-location`
-    return fetch(url).then(res => {
-      expect(res.url).to.equal(url)
-      expect(res.status).to.equal(301)
-      expect(res.headers.get('location')).to.be.null
-    })
-  })
+  // it('should treat broken redirect as ordinary response (follow)', () => {
+  //   const url = `${base}redirect/no-location`
+  //   return fetch(url).then(res => {
+  //     expect(res.url).to.equal(url)
+  //     expect(res.status).to.equal(301)
+  //     expect(res.headers.get('location')).to.be.null
+  //   })
+  // })
 
-  it('should treat broken redirect as ordinary response (manual)', () => {
-    const url = `${base}redirect/no-location`
-    const options = {
-      redirect: 'manual'
-    }
-    return fetch(url, options).then(res => {
-      expect(res.url).to.equal(url)
-      expect(res.status).to.equal(301)
-      expect(res.headers.get('location')).to.be.null
-    })
-  })
+  // it('should treat broken redirect as ordinary response (manual)', () => {
+  //   const url = `${base}redirect/no-location`
+  //   const options = {
+  //     redirect: 'manual'
+  //   }
+  //   return fetch(url, options).then(res => {
+  //     expect(res.url).to.equal(url)
+  //     expect(res.status).to.equal(301)
+  //     expect(res.headers.get('location')).to.be.null
+  //   })
+  // })
 
   it('should throw a TypeError on an invalid redirect option', () => {
     const url = `${base}redirect/301`
@@ -543,7 +544,7 @@ describe('node-fetch', () => {
     })
   })
 
-  it('should set redirected property on response when redirect', () => {
+  xit('should set redirected property on response when redirect', () => {
     const url = `${base}redirect/301`
     return fetch(url).then(res => {
       expect(res.redirected).to.be.true
@@ -734,7 +735,7 @@ describe('node-fetch', () => {
     })
   })
 
-  it('should handle no content response with gzip encoding', () => {
+  xit('should handle no content response with gzip encoding', () => {
     const url = `${base}no-content/gzip`
     return fetch(url).then(res => {
       expect(res.status).to.equal(204)
@@ -748,7 +749,7 @@ describe('node-fetch', () => {
     })
   })
 
-  it('should handle not modified response', () => {
+  xit('should handle not modified response', () => {
     const url = `${base}not-modified`
     return fetch(url).then(res => {
       expect(res.status).to.equal(304)
@@ -761,7 +762,7 @@ describe('node-fetch', () => {
     })
   })
 
-  it('should handle not modified response with gzip encoding', () => {
+  xit('should handle not modified response with gzip encoding', () => {
     const url = `${base}not-modified/gzip`
     return fetch(url).then(res => {
       expect(res.status).to.equal(304)
@@ -775,116 +776,116 @@ describe('node-fetch', () => {
     })
   })
 
-  // it('should decompress gzip response', () => {
-  //   const url = `${base}gzip`
-  //   return fetch(url).then(res => {
-  //     expect(res.headers.get('content-type')).to.equal('text/plain')
-  //     return res.text().then(result => {
-  //       expect(result).to.be.a('string')
-  //       expect(result).to.equal('hello world')
-  //     })
-  //   })
-  // })
+  xit('should decompress gzip response', () => {
+    const url = `${base}gzip`
+    return fetch(url).then(res => {
+      expect(res.headers.get('content-type')).to.equal('text/plain')
+      return res.text().then(result => {
+        expect(result).to.be.a('string')
+        expect(result).to.equal('hello world')
+      })
+    })
+  })
 
-  // it('should decompress slightly invalid gzip response', () => {
-  //   const url = `${base}gzip-truncated`
-  //   return fetch(url).then(res => {
-  //     expect(res.headers.get('content-type')).to.equal('text/plain')
-  //     return res.text().then(result => {
-  //       expect(result).to.be.a('string')
-  //       expect(result).to.equal('hello world')
-  //     })
-  //   })
-  // })
+  xit('should decompress slightly invalid gzip response', () => {
+    const url = `${base}gzip-truncated`
+    return fetch(url).then(res => {
+      expect(res.headers.get('content-type')).to.equal('text/plain')
+      return res.text().then(result => {
+        expect(result).to.be.a('string')
+        expect(result).to.equal('hello world')
+      })
+    })
+  })
 
-  // it('should make capitalised Content-Encoding lowercase', () => {
-  //   const url = `${base}gzip-capital`
-  //   return fetch(url).then(res => {
-  //     expect(res.headers.get('content-encoding')).to.equal('gzip')
-  //     return res.text().then(result => {
-  //       expect(result).to.be.a('string')
-  //       expect(result).to.equal('hello world')
-  //     })
-  //   })
-  // })
+  xit('should make capitalised Content-Encoding lowercase', () => {
+    const url = `${base}gzip-capital`
+    return fetch(url).then(res => {
+      expect(res.headers.get('content-encoding')).to.equal('gzip')
+      return res.text().then(result => {
+        expect(result).to.be.a('string')
+        expect(result).to.equal('hello world')
+      })
+    })
+  })
 
-  // it('should decompress deflate response', () => {
-  //   const url = `${base}deflate`
-  //   return fetch(url).then(res => {
-  //     expect(res.headers.get('content-type')).to.equal('text/plain')
-  //     return res.text().then(result => {
-  //       expect(result).to.be.a('string')
-  //       expect(result).to.equal('hello world')
-  //     })
-  //   })
-  // })
+  xit('should decompress deflate response', () => {
+    const url = `${base}deflate`
+    return fetch(url).then(res => {
+      expect(res.headers.get('content-type')).to.equal('text/plain')
+      return res.text().then(result => {
+        expect(result).to.be.a('string')
+        expect(result).to.equal('hello world')
+      })
+    })
+  })
 
-  // it('should decompress deflate raw response from old apache server', () => {
-  //   const url = `${base}deflate-raw`
-  //   return fetch(url).then(res => {
-  //     expect(res.headers.get('content-type')).to.equal('text/plain')
-  //     return res.text().then(result => {
-  //       expect(result).to.be.a('string')
-  //       expect(result).to.equal('hello world')
-  //     })
-  //   })
-  // })
+  xit('should decompress deflate raw response from old apache server', () => {
+    const url = `${base}deflate-raw`
+    return fetch(url).then(res => {
+      expect(res.headers.get('content-type')).to.equal('text/plain')
+      return res.text().then(result => {
+        expect(result).to.be.a('string')
+        expect(result).to.equal('hello world')
+      })
+    })
+  })
 
-  // it('should decompress brotli response', function () {
-  //   if (typeof zlib.createBrotliDecompress !== 'function') {
-  //     this.skip()
-  //   }
+  xit('should decompress brotli response', function () {
+    if (typeof zlib.createBrotliDecompress !== 'function') {
+      this.skip()
+    }
 
-  //   const url = `${base}brotli`
-  //   return fetch(url).then(res => {
-  //     expect(res.headers.get('content-type')).to.equal('text/plain')
-  //     return res.text().then(result => {
-  //       expect(result).to.be.a('string')
-  //       expect(result).to.equal('hello world')
-  //     })
-  //   })
-  // })
+    const url = `${base}brotli`
+    return fetch(url).then(res => {
+      expect(res.headers.get('content-type')).to.equal('text/plain')
+      return res.text().then(result => {
+        expect(result).to.be.a('string')
+        expect(result).to.equal('hello world')
+      })
+    })
+  })
 
-  // it('should handle no content response with brotli encoding', function () {
-  //   if (typeof zlib.createBrotliDecompress !== 'function') {
-  //     this.skip()
-  //   }
+  xit('should handle no content response with brotli encoding', function () {
+    if (typeof zlib.createBrotliDecompress !== 'function') {
+      this.skip()
+    }
 
-  //   const url = `${base}no-content/brotli`
-  //   return fetch(url).then(res => {
-  //     expect(res.status).to.equal(204)
-  //     expect(res.statusText).to.equal('No Content')
-  //     expect(res.headers.get('content-encoding')).to.equal('br')
-  //     expect(res.ok).to.be.true
-  //     return res.text().then(result => {
-  //       expect(result).to.be.a('string')
-  //       expect(result).to.be.empty
-  //     })
-  //   })
-  // })
+    const url = `${base}no-content/brotli`
+    return fetch(url).then(res => {
+      expect(res.status).to.equal(204)
+      expect(res.statusText).to.equal('No Content')
+      expect(res.headers.get('content-encoding')).to.equal('br')
+      expect(res.ok).to.be.true
+      return res.text().then(result => {
+        expect(result).to.be.a('string')
+        expect(result).to.be.empty
+      })
+    })
+  })
 
-  // it('should skip decompression if unsupported', () => {
-  //   const url = `${base}sdch`
-  //   return fetch(url).then(res => {
-  //     expect(res.headers.get('content-type')).to.equal('text/plain')
-  //     return res.text().then(result => {
-  //       expect(result).to.be.a('string')
-  //       expect(result).to.equal('fake sdch string')
-  //     })
-  //   })
-  // })
+  xit('should skip decompression if unsupported', () => {
+    const url = `${base}sdch`
+    return fetch(url).then(res => {
+      expect(res.headers.get('content-type')).to.equal('text/plain')
+      return res.text().then(result => {
+        expect(result).to.be.a('string')
+        expect(result).to.equal('fake sdch string')
+      })
+    })
+  })
 
-  // it('should reject if response compression is invalid', () => {
-  //   const url = `${base}invalid-content-encoding`
-  //   return fetch(url).then(res => {
-  //     expect(res.headers.get('content-type')).to.equal('text/plain')
-  //     return expect(res.text()).to.eventually.be.rejected
-  //       .and.be.an.instanceOf(FetchError)
-  //       .and.have.property('code', 'Z_DATA_ERROR')
-  //   })
-  // })
+  xit('should reject if response compression is invalid', () => {
+    const url = `${base}invalid-content-encoding`
+    return fetch(url).then(res => {
+      expect(res.headers.get('content-type')).to.equal('text/plain')
+      return expect(res.text()).to.eventually.be.rejected
+        // .and.be.an.instanceOf(FetchError)
+        .and.have.property('code', 'Z_DATA_ERROR')
+    })
+  })
 
-  it('should handle errors on the body stream even if it is not used', done => {
+  xit('should handle errors on the body stream even if it is not used', done => {
     const url = `${base}invalid-content-encoding`
     fetch(url)
       .then(res => {
@@ -936,255 +937,255 @@ describe('node-fetch', () => {
   //   })
   // })
 
-  // const testAbortController = (name, buildAbortController, moreTests = null) => {
-  //   describe(`AbortController (${name})`, () => {
-  //     let controller
+  const testAbortController = (name, buildAbortController, moreTests = null) => {
+    describe(`AbortController (${name})`, () => {
+      let controller
 
-  //     beforeEach(() => {
-  //       controller = buildAbortController()
-  //     })
+      beforeEach(() => {
+        controller = buildAbortController()
+      })
 
-  //     it('should support request cancellation with signal', () => {
-  //       const fetches = [
-  //         fetch(
-  //           `${base}timeout`,
-  //           {
-  //             method: 'POST',
-  //             signal: controller.signal,
-  //             headers: {
-  //               'Content-Type': 'application/json',
-  //               body: JSON.stringify({ hello: 'world' })
-  //             }
-  //           }
-  //         )
-  //       ]
-  //       setTimeout(() => {
-  //         controller.abort()
-  //       }, 100)
+      xit('should support request cancellation with signal', () => {
+        const fetches = [
+          fetch(
+            `${base}timeout`,
+            {
+              method: 'POST',
+              signal: controller.signal,
+              headers: {
+                'Content-Type': 'application/json',
+                body: JSON.stringify({ hello: 'world' })
+              }
+            }
+          )
+        ]
+        setTimeout(() => {
+          controller.abort()
+        }, 100)
 
-  //       return Promise.all(fetches.map(fetched => expect(fetched)
-  //         .to.eventually.be.rejected
-  //         .and.be.an.instanceOf(Error)
-  //         .and.include({
-  //           type: 'aborted',
-  //           name: 'AbortError'
-  //         })
-  //       ))
-  //     })
+        return Promise.all(fetches.map(fetched => expect(fetched)
+          .to.eventually.be.rejected
+          .and.be.an.instanceOf(Error)
+          .and.include({
+            type: 'aborted',
+            name: 'AbortError'
+          })
+        ))
+      })
 
-  //     it('should support multiple request cancellation with signal', () => {
-  //       const fetches = [
-  //         fetch(`${base}timeout`, { signal: controller.signal }),
-  //         fetch(
-  //           `${base}timeout`,
-  //           {
-  //             method: 'POST',
-  //             signal: controller.signal,
-  //             headers: {
-  //               'Content-Type': 'application/json',
-  //               body: JSON.stringify({ hello: 'world' })
-  //             }
-  //           }
-  //         )
-  //       ]
-  //       setTimeout(() => {
-  //         controller.abort()
-  //       }, 100)
+      xit('should support multiple request cancellation with signal', () => {
+        const fetches = [
+          fetch(`${base}timeout`, { signal: controller.signal }),
+          fetch(
+            `${base}timeout`,
+            {
+              method: 'POST',
+              signal: controller.signal,
+              headers: {
+                'Content-Type': 'application/json',
+                body: JSON.stringify({ hello: 'world' })
+              }
+            }
+          )
+        ]
+        setTimeout(() => {
+          controller.abort()
+        }, 100)
 
-  //       return Promise.all(fetches.map(fetched => expect(fetched)
-  //         .to.eventually.be.rejected
-  //         .and.be.an.instanceOf(Error)
-  //         .and.include({
-  //           type: 'aborted',
-  //           name: 'AbortError'
-  //         })
-  //       ))
-  //     })
+        return Promise.all(fetches.map(fetched => expect(fetched)
+          .to.eventually.be.rejected
+          .and.be.an.instanceOf(Error)
+          .and.include({
+            type: 'aborted',
+            name: 'AbortError'
+          })
+        ))
+      })
 
-  //     it('should reject immediately if signal has already been aborted', () => {
-  //       const url = `${base}timeout`
-  //       const options = {
-  //         signal: controller.signal
-  //       }
-  //       controller.abort()
-  //       const fetched = fetch(url, options)
-  //       return expect(fetched).to.eventually.be.rejected
-  //         .and.be.an.instanceOf(Error)
-  //         .and.include({
-  //           type: 'aborted',
-  //           name: 'AbortError'
-  //         })
-  //     })
+      xit('should reject immediately if signal has already been aborted', () => {
+        const url = `${base}timeout`
+        const options = {
+          signal: controller.signal
+        }
+        controller.abort()
+        const fetched = fetch(url, options)
+        return expect(fetched).to.eventually.be.rejected
+          .and.be.an.instanceOf(Error)
+          .and.include({
+            type: 'aborted',
+            name: 'AbortError'
+          })
+      })
 
-  //     it('should allow redirects to be aborted', () => {
-  //       const request = new Request(`${base}redirect/slow`, {
-  //         signal: controller.signal
-  //       })
-  //       setTimeout(() => {
-  //         controller.abort()
-  //       }, 20)
-  //       return expect(fetch(request)).to.be.eventually.rejected
-  //         .and.be.an.instanceOf(Error)
-  //         .and.have.property('name', 'AbortError')
-  //     })
+      xit('should allow redirects to be aborted', () => {
+        const request = new Request(`${base}redirect/slow`, {
+          signal: controller.signal
+        })
+        setTimeout(() => {
+          controller.abort()
+        }, 20)
+        return expect(fetch(request)).to.be.eventually.rejected
+          .and.be.an.instanceOf(Error)
+          .and.have.property('name', 'AbortError')
+      })
 
-  //     it('should allow redirected response body to be aborted', () => {
-  //       const request = new Request(`${base}redirect/slow-stream`, {
-  //         signal: controller.signal
-  //       })
-  //       return expect(fetch(request).then(res => {
-  //         expect(res.headers.get('content-type')).to.equal('text/plain')
-  //         const result = res.text()
-  //         controller.abort()
-  //         return result
-  //       })).to.be.eventually.rejected
-  //         .and.be.an.instanceOf(Error)
-  //         .and.have.property('name', 'AbortError')
-  //     })
+      xit('should allow redirected response body to be aborted', () => {
+        const request = new Request(`${base}redirect/slow-stream`, {
+          signal: controller.signal
+        })
+        return expect(fetch(request).then(res => {
+          expect(res.headers.get('content-type')).to.equal('text/plain')
+          const result = res.text()
+          controller.abort()
+          return result
+        })).to.be.eventually.rejected
+          .and.be.an.instanceOf(Error)
+          .and.have.property('name', 'AbortError')
+      })
 
-  //     it('should reject response body with AbortError when aborted before stream has been read completely', () => {
-  //       return expect(fetch(
-  //         `${base}slow`,
-  //         { signal: controller.signal }
-  //       ))
-  //         .to.eventually.be.fulfilled
-  //         .then(res => {
-  //           const promise = res.text()
-  //           controller.abort()
-  //           return expect(promise)
-  //             .to.eventually.be.rejected
-  //             .and.be.an.instanceof(Error)
-  //             .and.have.property('name', 'AbortError')
-  //         })
-  //     })
+      xit('should reject response body with AbortError when aborted before stream has been read completely', () => {
+        return expect(fetch(
+          `${base}slow`,
+          { signal: controller.signal }
+        ))
+          .to.eventually.be.fulfilled
+          .then(res => {
+            const promise = res.text()
+            controller.abort()
+            return expect(promise)
+              .to.eventually.be.rejected
+              .and.be.an.instanceof(Error)
+              .and.have.property('name', 'AbortError')
+          })
+      })
 
-  //     it('should reject response body methods immediately with AbortError when aborted before stream is disturbed', () => {
-  //       return expect(fetch(
-  //         `${base}slow`,
-  //         { signal: controller.signal }
-  //       ))
-  //         .to.eventually.be.fulfilled
-  //         .then(res => {
-  //           controller.abort()
-  //           return expect(res.text())
-  //             .to.eventually.be.rejected
-  //             .and.be.an.instanceof(Error)
-  //             .and.have.property('name', 'AbortError')
-  //         })
-  //     })
+      xit('should reject response body methods immediately with AbortError when aborted before stream is disturbed', () => {
+        return expect(fetch(
+          `${base}slow`,
+          { signal: controller.signal }
+        ))
+          .to.eventually.be.fulfilled
+          .then(res => {
+            controller.abort()
+            return expect(res.text())
+              .to.eventually.be.rejected
+              .and.be.an.instanceof(Error)
+              .and.have.property('name', 'AbortError')
+          })
+      })
 
-  //     it('should emit error event to response body with an AbortError when aborted before underlying stream is closed', done => {
-  //       expect(fetch(
-  //         `${base}slow`,
-  //         { signal: controller.signal }
-  //       ))
-  //         .to.eventually.be.fulfilled
-  //         .then(res => {
-  //           res.body.once('error', err => {
-  //             expect(err)
-  //               .to.be.an.instanceof(Error)
-  //               .and.have.property('name', 'AbortError')
-  //             done()
-  //           })
-  //           controller.abort()
-  //         })
-  //     })
+      xit('should emit error event to response body with an AbortError when aborted before underlying stream is closed', done => {
+        expect(fetch(
+          `${base}slow`,
+          { signal: controller.signal }
+        ))
+          .to.eventually.be.fulfilled
+          .then(res => {
+            res.body.once('error', err => {
+              expect(err)
+                .to.be.an.instanceof(Error)
+                .and.have.property('name', 'AbortError')
+              done()
+            })
+            controller.abort()
+          })
+      })
 
-  //     it('should cancel request body of type Stream with AbortError when aborted', () => {
-  //       const body = new stream.Readable({ objectMode: true })
-  //       body._read = () => {}
-  //       const promise = fetch(
-  //         `${base}slow`,
-  //         { signal: controller.signal, body, method: 'POST' }
-  //       )
+      xit('should cancel request body of type Stream with AbortError when aborted', () => {
+        const body = new stream.Readable({ objectMode: true })
+        body._read = () => {}
+        const promise = fetch(
+          `${base}slow`,
+          { signal: controller.signal, body, method: 'POST' }
+        )
 
-  //       const result = Promise.all([
-  //         new Promise((resolve, reject) => {
-  //           body.on('error', error => {
-  //             try {
-  //               expect(error).to.be.an.instanceof(Error).and.have.property('name', 'AbortError')
-  //               resolve()
-  //             } catch (error_) {
-  //               reject(error_)
-  //             }
-  //           })
-  //         }),
-  //         expect(promise).to.eventually.be.rejected
-  //           .and.be.an.instanceof(Error)
-  //           .and.have.property('name', 'AbortError')
-  //       ])
+        const result = Promise.all([
+          new Promise((resolve, reject) => {
+            body.on('error', error => {
+              try {
+                expect(error).to.be.an.instanceof(Error).and.have.property('name', 'AbortError')
+                resolve()
+              } catch (error_) {
+                reject(error_)
+              }
+            })
+          }),
+          expect(promise).to.eventually.be.rejected
+            .and.be.an.instanceof(Error)
+            .and.have.property('name', 'AbortError')
+        ])
 
-  //       controller.abort()
+        controller.abort()
 
-  //       return result
-  //     })
+        return result
+      })
 
-  //     if (moreTests) {
-  //       moreTests()
-  //     }
-  //   })
-  // }
+      if (moreTests) {
+        moreTests()
+      }
+    })
+  }
 
-  // testAbortController('polyfill',
-  //   () => new AbortControllerPolyfill(),
-  //   () => {
-  //     it('should remove internal AbortSignal event listener after request is aborted', () => {
-  //       const controller = new AbortControllerPolyfill()
-  //       const { signal } = controller
+  testAbortController('polyfill',
+    () => new AbortControllerPolyfill(),
+    () => {
+      xit('should remove internal AbortSignal event listener after request is aborted', () => {
+        const controller = new AbortControllerPolyfill()
+        const { signal } = controller
 
-  //       setTimeout(() => {
-  //         controller.abort()
-  //       }, 20)
+        setTimeout(() => {
+          controller.abort()
+        }, 20)
 
-  //       return expect(fetch(`${base}timeout`, { signal }))
-  //         .to.eventually.be.rejected
-  //         .and.be.an.instanceof(Error)
-  //         .and.have.property('name', 'AbortError')
-  //         .then(() => {
-  //           return expect(signal.listeners.abort.length).to.equal(0)
-  //         })
-  //     })
+        return expect(fetch(`${base}timeout`, { signal }))
+          .to.eventually.be.rejected
+          .and.be.an.instanceof(Error)
+          .and.have.property('name', 'AbortError')
+          .then(() => {
+            return expect(signal.listeners.abort.length).to.equal(0)
+          })
+      })
 
-  //     it('should remove internal AbortSignal event listener after request and response complete without aborting', () => {
-  //       const controller = new AbortControllerPolyfill()
-  //       const { signal } = controller
-  //       const fetchHtml = fetch(`${base}html`, { signal })
-  //         .then(res => res.text())
-  //       const fetchResponseError = fetch(`${base}error/reset`, { signal })
-  //       const fetchRedirect = fetch(`${base}redirect/301`, { signal }).then(res => res.json())
-  //       return Promise.all([
-  //         expect(fetchHtml).to.eventually.be.fulfilled.and.equal('<html></html>'),
-  //         expect(fetchResponseError).to.be.eventually.rejected,
-  //         expect(fetchRedirect).to.eventually.be.fulfilled
-  //       ]).then(() => {
-  //         expect(signal.listeners.abort.length).to.equal(0)
-  //       })
-  //     })
-  //   }
-  // )
+      xit('should remove internal AbortSignal event listener after request and response complete without aborting', () => {
+        const controller = new AbortControllerPolyfill()
+        const { signal } = controller
+        const fetchHtml = fetch(`${base}html`, { signal })
+          .then(res => res.text())
+        const fetchResponseError = fetch(`${base}error/reset`, { signal })
+        const fetchRedirect = fetch(`${base}redirect/301`, { signal }).then(res => res.json())
+        return Promise.all([
+          expect(fetchHtml).to.eventually.be.fulfilled.and.equal('<html></html>'),
+          expect(fetchResponseError).to.be.eventually.rejected,
+          expect(fetchRedirect).to.eventually.be.fulfilled
+        ]).then(() => {
+          expect(signal.listeners.abort.length).to.equal(0)
+        })
+      })
+    }
+  )
 
-  // testAbortController('mysticatea', () => new AbortControllerMysticatea())
+  testAbortController('mysticatea', () => new AbortControllerMysticatea())
 
-  // if (process.version > 'v15') {
-  //   testAbortController('native', () => new AbortController())
-  // }
+  if (process.version > 'v15') {
+    testAbortController('native', () => new AbortController())
+  }
 
-  // it('should throw a TypeError if a signal is not of type AbortSignal or EventTarget', () => {
-  //   return Promise.all([
-  //     expect(fetch(`${base}inspect`, { signal: {} }))
-  //       .to.be.eventually.rejected
-  //       .and.be.an.instanceof(TypeError)
-  //       .and.have.property('message').includes('AbortSignal'),
-  //     expect(fetch(`${base}inspect`, { signal: '' }))
-  //       .to.be.eventually.rejected
-  //       .and.be.an.instanceof(TypeError)
-  //       .and.have.property('message').includes('AbortSignal'),
-  //     expect(fetch(`${base}inspect`, { signal: Object.create(null) }))
-  //       .to.be.eventually.rejected
-  //       .and.be.an.instanceof(TypeError)
-  //       .and.have.property('message').includes('AbortSignal')
-  //   ])
-  // })
+  xit('should throw a TypeError if a signal is not of type AbortSignal or EventTarget', () => {
+    return Promise.all([
+      expect(fetch(`${base}inspect`, { signal: {} }))
+        .to.be.eventually.rejected
+        .and.be.an.instanceof(TypeError)
+        .and.have.property('message').includes('AbortSignal'),
+      expect(fetch(`${base}inspect`, { signal: '' }))
+        .to.be.eventually.rejected
+        .and.be.an.instanceof(TypeError)
+        .and.have.property('message').includes('AbortSignal'),
+      expect(fetch(`${base}inspect`, { signal: Object.create(null) }))
+        .to.be.eventually.rejected
+        .and.be.an.instanceof(TypeError)
+        .and.have.property('message').includes('AbortSignal')
+    ])
+  })
 
   it('should gracefully handle a nullish signal', () => {
     return Promise.all([
@@ -1509,22 +1510,22 @@ describe('node-fetch', () => {
   //   })
   // })
 
-  // it('should allow POST request with object body', () => {
-  //   const url = `${base}inspect`
-  //   // Note that fetch simply calls tostring on an object
-  //   const options = {
-  //     method: 'POST',
-  //     body: { a: 1 }
-  //   }
-  //   return fetch(url, options).then(res => {
-  //     return res.json()
-  //   }).then(res => {
-  //     expect(res.method).to.equal('POST')
-  //     expect(res.body).to.equal('[object Object]')
-  //     expect(res.headers['content-type']).to.equal('text/plain;charset=UTF-8')
-  //     expect(res.headers['content-length']).to.equal('15')
-  //   })
-  // })
+  xit('should allow POST request with object body', () => {
+    const url = `${base}inspect`
+    // Note that fetch simply calls tostring on an object
+    const options = {
+      method: 'POST',
+      body: { a: 1 }
+    }
+    return fetch(url, options).then(res => {
+      return res.json()
+    }).then(res => {
+      expect(res.method).to.equal('POST')
+      expect(res.body).to.equal('[object Object]')
+      expect(res.headers['content-type']).to.equal('text/plain;charset=UTF-8')
+      expect(res.headers['content-length']).to.equal('15')
+    })
+  })
 
   it('constructing a Response with URLSearchParams as body should have a Content-Type', () => {
     const parameters = new URLSearchParams()
@@ -1618,26 +1619,26 @@ describe('node-fetch', () => {
   //   })
   // })
 
-  // it('should overwrite Content-Length if possible', () => {
-  //   const url = `${base}inspect`
-  //   // Note that fetch simply calls tostring on an object
-  //   const options = {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Length': '1000'
-  //     },
-  //     body: 'a=1'
-  //   }
-  //   return fetch(url, options).then(res => {
-  //     return res.json()
-  //   }).then(res => {
-  //     expect(res.method).to.equal('POST')
-  //     expect(res.body).to.equal('a=1')
-  //     expect(res.headers['transfer-encoding']).to.be.undefined
-  //     expect(res.headers['content-type']).to.equal('text/plain;charset=UTF-8')
-  //     expect(res.headers['content-length']).to.equal('3')
-  //   })
-  // })
+  xit('should overwrite Content-Length if possible', () => {
+    const url = `${base}inspect`
+    // Note that fetch simply calls tostring on an object
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Length': '1000'
+      },
+      body: 'a=1'
+    }
+    return fetch(url, options).then(res => {
+      return res.json()
+    }).then(res => {
+      expect(res.method).to.equal('POST')
+      expect(res.body).to.equal('a=1')
+      expect(res.headers['transfer-encoding']).to.be.undefined
+      expect(res.headers['content-type']).to.equal('text/plain;charset=UTF-8')
+      expect(res.headers['content-length']).to.equal('3')
+    })
+  })
 
   it('should allow PUT request', () => {
     const url = `${base}inspect`
@@ -1998,60 +1999,60 @@ describe('node-fetch', () => {
     })
   })
 
-  // it('should support fetch with Node.js URL object', () => {
-  //   const url = `${base}hello`
-  //   const urlObject = new URL(url)
-  //   const request = new Request(urlObject)
-  //   return fetch(request).then(res => {
-  //     expect(res.url).to.equal(url)
-  //     expect(res.ok).to.be.true
-  //     expect(res.status).to.equal(200)
-  //   })
-  // })
+  xit('should support fetch with Node.js URL object', () => {
+    const url = `${base}hello`
+    const urlObject = new URL(url)
+    const request = new Request(urlObject)
+    return fetch(request).then(res => {
+      expect(res.url).to.equal(url)
+      expect(res.ok).to.be.true
+      expect(res.status).to.equal(200)
+    })
+  })
 
-  // it('should support fetch with WHATWG URL object', () => {
-  //   const url = `${base}hello`
-  //   const urlObject = new URL(url)
-  //   const request = new Request(urlObject)
-  //   return fetch(request).then(res => {
-  //     expect(res.url).to.equal(url)
-  //     expect(res.ok).to.be.true
-  //     expect(res.status).to.equal(200)
-  //   })
-  // })
+  xit('should support fetch with WHATWG URL object', () => {
+    const url = `${base}hello`
+    const urlObject = new URL(url)
+    const request = new Request(urlObject)
+    return fetch(request).then(res => {
+      expect(res.url).to.equal(url)
+      expect(res.ok).to.be.true
+      expect(res.status).to.equal(200)
+    })
+  })
 
-  // it('should keep `?` sign in URL when no params are given', () => {
-  //   const url = `${base}question?`
-  //   const urlObject = new URL(url)
-  //   const request = new Request(urlObject)
-  //   return fetch(request).then(res => {
-  //     expect(res.url).to.equal(url)
-  //     expect(res.ok).to.be.true
-  //     expect(res.status).to.equal(200)
-  //   })
-  // })
+  xit('should keep `?` sign in URL when no params are given', () => {
+    const url = `${base}question?`
+    const urlObject = new URL(url)
+    const request = new Request(urlObject)
+    return fetch(request).then(res => {
+      expect(res.url).to.equal(url)
+      expect(res.ok).to.be.true
+      expect(res.status).to.equal(200)
+    })
+  })
 
-  // it('if params are given, do not modify anything', () => {
-  //   const url = `${base}question?a=1`
-  //   const urlObject = new URL(url)
-  //   const request = new Request(urlObject)
-  //   return fetch(request).then(res => {
-  //     expect(res.url).to.equal(url)
-  //     expect(res.ok).to.be.true
-  //     expect(res.status).to.equal(200)
-  //   })
-  // })
+  xit('if params are given, do not modify anything', () => {
+    const url = `${base}question?a=1`
+    const urlObject = new URL(url)
+    const request = new Request(urlObject)
+    return fetch(request).then(res => {
+      expect(res.url).to.equal(url)
+      expect(res.ok).to.be.true
+      expect(res.status).to.equal(200)
+    })
+  })
 
-  // it('should preserve the hash (#) symbol', () => {
-  //   const url = `${base}question?#`
-  //   const urlObject = new URL(url)
-  //   const request = new Request(urlObject)
-  //   return fetch(request).then(res => {
-  //     expect(res.url).to.equal(url)
-  //     expect(res.ok).to.be.true
-  //     expect(res.status).to.equal(200)
-  //   })
-  // })
+  xit('should preserve the hash (#) symbol', () => {
+    const url = `${base}question?#`
+    const urlObject = new URL(url)
+    const request = new Request(urlObject)
+    return fetch(request).then(res => {
+      expect(res.url).to.equal(url)
+      expect(res.ok).to.be.true
+      expect(res.status).to.equal(200)
+    })
+  })
 
   it('should support reading blob as text', () => {
     return new Response('hello')
@@ -2122,15 +2123,6 @@ describe('node-fetch', () => {
       expect(body.headers.a).to.equal('2')
     })
   })
-
-  // it('should support arrayBuffer(), blob(), text(), json() and buffer() method in Body constructor', () => {
-  //   const body = new Body('a=1')
-  //   expect(body).to.have.property('arrayBuffer')
-  //   expect(body).to.have.property('blob')
-  //   expect(body).to.have.property('text')
-  //   expect(body).to.have.property('json')
-  //   expect(body).to.have.property('buffer')
-  // })
 
   // /* eslint-disable-next-line func-names */
   // it('should create custom FetchError', function funcName () {

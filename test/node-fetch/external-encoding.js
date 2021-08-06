@@ -1,43 +1,45 @@
-// const chai = require('chai')
-// const { fetch } = require('../../index.js')
+/* eslint no-unused-expressions: "off" */
 
-// const { expect } = chai
+const chai = require('chai')
+const { fetch } = require('../../index.js')
 
-// describe('external encoding', () => {
-//   describe('data uri', () => {
-//     it('should accept base64-encoded gif data uri', () => {
-//       return fetch('data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=').then(r => {
-//         expect(r.status).to.equal(200)
-//         expect(r.headers.get('Content-Type')).to.equal('image/gif')
+const { expect } = chai
 
-//         return r.buffer().then(b => {
-//           expect(b).to.be.an.instanceOf(Buffer)
-//         })
-//       })
-//     })
+xdescribe('external encoding', () => {
+  describe('data uri', () => {
+    it('should accept base64-encoded gif data uri', () => {
+      return fetch('data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=').then(r => {
+        expect(r.status).to.equal(200)
+        expect(r.headers.get('Content-Type')).to.equal('image/gif')
 
-//     it('should accept data uri with specified charset', async () => {
-//       const r = await fetch('data:text/plain;charset=UTF-8;page=21,the%20data:1234,5678')
-//       expect(r.status).to.equal(200)
-//       expect(r.headers.get('Content-Type')).to.equal('text/plain;charset=UTF-8;page=21')
+        return r.buffer().then(b => {
+          expect(b).to.be.an.instanceOf(Buffer)
+        })
+      })
+    })
 
-//       const b = await r.text()
-//       expect(b).to.equal('the data:1234,5678')
-//     })
+    it('should accept data uri with specified charset', async () => {
+      const r = await fetch('data:text/plain;charset=UTF-8;page=21,the%20data:1234,5678')
+      expect(r.status).to.equal(200)
+      expect(r.headers.get('Content-Type')).to.equal('text/plain;charset=UTF-8;page=21')
 
-//     it('should accept data uri of plain text', () => {
-//       return fetch('data:,Hello%20World!').then(r => {
-//         expect(r.status).to.equal(200)
-//         expect(r.headers.get('Content-Type')).to.equal('text/plain;charset=US-ASCII')
-//         return r.text().then(t => expect(t).to.equal('Hello World!'))
-//       })
-//     })
+      const b = await r.text()
+      expect(b).to.equal('the data:1234,5678')
+    })
 
-//     it('should reject invalid data uri', () => {
-//       return fetch('data:@@@@').catch(error => {
-//         expect(error).to.exist
-//         expect(error.message).to.include('malformed data: URI')
-//       })
-//     })
-//   })
-// })
+    it('should accept data uri of plain text', () => {
+      return fetch('data:,Hello%20World!').then(r => {
+        expect(r.status).to.equal(200)
+        expect(r.headers.get('Content-Type')).to.equal('text/plain;charset=US-ASCII')
+        return r.text().then(t => expect(t).to.equal('Hello World!'))
+      })
+    })
+
+    it('should reject invalid data uri', () => {
+      return fetch('data:@@@@').catch(error => {
+        expect(error).to.exist
+        expect(error.message).to.include('malformed data: URI')
+      })
+    })
+  })
+})
